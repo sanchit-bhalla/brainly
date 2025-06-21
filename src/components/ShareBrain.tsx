@@ -36,7 +36,7 @@ const ShareBrain: React.FC<ShareBrainProps> = ({ published, setPublished }) => {
         withCredentials: true, // Ensure credentials are sent with the request
       });
 
-      const newLink = `http://localhost:5173/brain/${response?.data?.data?.hash}`;
+      const newLink = `https://brainlydotai.netlify.app/brain/${response?.data?.data?.hash}`;
       setLink(newLink);
       copyToClipboard(newLink);
       setPublished(true);
