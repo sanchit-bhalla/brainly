@@ -20,6 +20,7 @@ import { Tweet } from "react-tweet";
 import { useLocation } from "react-router-dom";
 import TextIcon2 from "../icons/TextIcon2";
 import PdfIcon2 from "../icons/PdfIcon2";
+import ErrorBoundary from "./ErrorBoundary";
 
 interface ContentCardProps {
   content: BrainContent;
@@ -60,13 +61,24 @@ const ContentCard: React.FC<ContentCardProps> = ({ content }) => {
       );
     } else if (content.type === "tweet") {
       const postId = extractTwitterPostId(content.link);
-      if (postId) return <Tweet id={postId} />;
-      else
+      if (!postId)
         return (
           <div className="h-32 bg-slate-100 flex justify-center items-center">
             <p className="opacity-50">Could not load post</p>
           </div>
         );
+
+      return (
+        <ErrorBoundary
+          fallback={
+            <div className="h-32 bg-slate-100 flex justify-center items-center">
+              <p className="opacity-50">{`Could not render tweet :(`}</p>
+            </div>
+          }
+        >
+          <Tweet id={postId} />
+        </ErrorBoundary>
+      );
     } else if (content.type === "pdf") {
       return (
         <div className="w-full p-2 bg-slate-100 flex justify-center items-center">
